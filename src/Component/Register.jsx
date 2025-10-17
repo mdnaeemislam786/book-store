@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 import LoginOptions from "./LoginOptions";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 import { auth } from "../Firebase-setup/Firebase-inet";
 import { useState } from "react";
 
@@ -34,6 +34,10 @@ const Register = () => {
         console.log(result.user);
         setSucces(true)
         event.target.reset();
+        sendEmailVerification(result.user)
+        .then(() =>{
+          alert("Please chack your email to verify")
+        })
       })
       .catch((error) => {
         console.log(error.message);
@@ -80,7 +84,7 @@ const Register = () => {
                 />
 
                 <div className="flex justify-between mt-1 mr-4">
-                  <a className="link link-hover">Forgot password?</a>
+                
                   <Link
                     to="/authentaction/login"
                     className="link text-green-600! link-hover border-b"
