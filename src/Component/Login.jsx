@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Link } from "react-router";
 import LoginOptions from "./LoginOptions";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { sendPasswordResetEmail, signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../Firebase-setup/Firebase-inet";
 
 
 const Login = () => {
   const [error, setError] = useState('');
+  const emailRef = useRef('');
 
   const handelLogin =(event)=>{
     event.preventDefault();
@@ -24,8 +25,21 @@ const Login = () => {
       console.log(error);
       setError(error.message)
     })
-  }
+  };
 
+  const handelForgetPassword = (event) => {
+    event.preventDefault();
+    const email = emailRef.current.value;
+    console.log(email);
+    sendPasswordResetEmail(auth, email)
+    .then(() => {
+      alert("Please chack your email")
+    })
+    .catch((error)=>{
+      console.log(error.message);
+    })
+
+  }
 
   return (
     <div>
@@ -43,8 +57,10 @@ const Login = () => {
             <div className="card-body">
               <form onSubmit={handelLogin}>
                 <fieldset className="fieldset">
+
                   <label className="label">Email</label>
-                  <input type="email" name="email" className="input" placeholder="Email" />
+                  <input type="email" ref={emailRef} name="email" className="input" placeholder="Email" />
+
                   <label className="label">Password</label>
                   <input
                     type="password"
@@ -53,7 +69,7 @@ const Login = () => {
                     name="password"
                   />
                   <div className="flex justify-between mt-1 mr-4">
-                    <a className="link link-hover">Forgot password?</a>
+                    <a onClick={handelForgetPassword} className="link link-hover">Forgot password?</a>
                     <Link
                       to="/authentaction/register"
                       className="link link-hover text-green-600!"                    >

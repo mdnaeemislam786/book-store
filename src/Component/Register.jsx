@@ -45,6 +45,7 @@ const Register = () => {
       });
   };
 
+
   return (
     <div className="bg-base-200 min-h-screen pt-[30vh]">
       <div className="hero-content flex-col flex m-auto justify-center items-center lg:flex-row-reverse max-w-[800px]">
